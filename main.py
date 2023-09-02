@@ -4,6 +4,8 @@ import getpass
 
 SQL_SETTINGS_SET = False
 sql_settings = None
+orion_maps_list = []
+owners_list = []
 
 def get_sql_settings():
     global SQL_SETTINGS_SET
@@ -36,6 +38,11 @@ def test_sql_settings(sql_settings):
             print("Connection failed. Please try again.")
         return
 
+def display_maps(sql_settings):
+    global orion_maps_list
+    orion_maps_list = sql_settings.get_orion_maps()
+    for orion_map in orion_maps_list:
+        print(orion_map)
 
 def main_menu():
     global sql_settings
@@ -60,9 +67,7 @@ def main_menu():
         sql_settings = get_sql_settings()
         print(sql_settings)
     elif choice == "2":
-        print("Displaying current maps and owners...")
-        print("Maps:")
-        print("Owners:")
+        display_maps(sql_settings)
     elif choice == "t":
         test_sql_settings(sql_settings)
     elif choice == "x":

@@ -19,6 +19,31 @@ class SolarWindsSQLSettings:
         except pymssql.Error as e:
             print(f"Error connecting to database: {e}")
             return None
+        
+
+    def get_orion_maps(self):
+        connection = self.connect()
+        if not connection:
+            print("Error: Could not establish a connection to the database.")
+            return []
+
+        cursor = connection.cursor()
+        orion_maps_list = []
+
+        query = "SELECT TOP (1000) [DisplayName], [AccountID],[UpdateDateTime],[CreateDateTime] FROM [SolarWindsOrion].[dbo].[Maps_Projects]"
+        
+
+        try:
+            cursor.execute(query)
+            for row in cursor.fetchall():
+                orion_map = OrionMap(row[0], row[1], row[2], row[3])
+                orion_maps_list.append(orion_map)
+        except pymssql.Error as e:
+            print(f"Error fetching data: {e}")
+        finally:
+            connection.close()
+
+        return orion_maps_list
 
     
     
