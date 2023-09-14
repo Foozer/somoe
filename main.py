@@ -18,13 +18,14 @@ def get_sql_settings():
     return sql_settings
 
 def test_sql_settings(sql_settings):
-    tested = False
-    with sql_settings.connect() as connection:
-        if connection:
-            print("Connection successful!")
-            return True
-        else:
+    try:
+        with sql_settings.connect() as connection:
+            if connection:
+                print("Connection successful!")
+                return True
+    except Exception as e:
             print("Connection failed. Please try again.")
+            print(e)
             return False
 
 
